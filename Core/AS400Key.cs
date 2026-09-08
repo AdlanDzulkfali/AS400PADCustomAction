@@ -101,6 +101,9 @@ namespace AS400PADCustomAction.Core
         Print = 29,
 
         [Description("Record Backspace")]
-        RecordBackspace = 30
+        RecordBackspace = 30,
+
+        [Description("Transmit")]
+        Transmit = 31
     }
 }

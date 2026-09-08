@@ -29,6 +29,14 @@ namespace AS400PADCustomAction.Core.Tn5250
         private CancellationTokenSource _cts;
         private readonly ManualResetEventSlim _screenUpdatedEvent = new ManualResetEventSlim(false);
         private readonly Tn5250ScreenBuffer _screenBuffer = new Tn5250ScreenBuffer();
+        private readonly List<PendingFieldWrite> _pendingWrites = new List<PendingFieldWrite>();
+
+        private class PendingFieldWrite
+        {
+            public int Row { get; set; }
+            public int Col { get; set; }
+            public string Text { get; set; }
+        }
 
         private readonly object _stateLock = new object();
         private volatile bool _isConnected;
@@ -202,6 +210,7 @@ namespace AS400PADCustomAction.Core.Tn5250
                 _stream = null;
                 _tcpClient = null;
                 _screenUpdatedEvent.Reset();
+                _pendingWrites.Clear();
             }
         }
 
@@ -236,6 +245,21 @@ namespace AS400PADCustomAction.Core.Tn5250
             if (!string.IsNullOrEmpty(text))
             {
                 _screenBuffer.WriteAt(targetRow, targetCol, text);
+
+                lock (_stateLock)
+                {
+                    string textToSend = text;
+                    if (eraseLength > textToSend.Length)
+                    {
+                        textToSend = textToSend.PadRight(eraseLength, ' ');
+                    }
+                    _pendingWrites.Add(new PendingFieldWrite
+                    {
+                        Row = targetRow,
+                        Col = targetCol,
+                        Text = textToSend
+                    });
+                }
             }
             else if (row.HasValue && col.HasValue)
             {
@@ -563,6 +587,10 @@ namespace AS400PADCustomAction.Core.Tn5250
                         case Tn5250Constants.CMD_CLEAR_UNIT:
                         case Tn5250Constants.CMD_CLEAR_UNIT_ALTERNATE:
                             _screenBuffer.Clear();
+                            lock (_stateLock)
+                            {
+                                _pendingWrites.Clear();
+                            }
                             break;
 
                         case Tn5250Constants.CMD_WRITE_TO_DISPLAY:
@@ -687,40 +715,12 @@ namespace AS400PADCustomAction.Core.Tn5250
 
                 byte[] textBytes = EbcdicCodec.ToEbcdicBytes(processedText);
 
-                // Construct 5250 Inbound Workstation Data Record
-                int payloadLength = 11 + textBytes.Length;
-                byte[] packet = new byte[payloadLength + 2];
+                byte[] wireBytes = BuildRFC1205InboundRecord(
+                    aidCode != Tn5250Constants.AID_NO_AID ? aidCode : Tn5250Constants.AID_ENTER,
+                    null,
+                    textBytes.Length > 0 ? textBytes : null);
 
-                // GDS Header
-                packet[0] = (byte)((payloadLength >> 8) & 0xFF);
-                packet[1] = (byte)(payloadLength & 0xFF);
-                packet[2] = 0x12;
-                packet[3] = 0xA0;
-                packet[4] = 0x00;
-                packet[5] = 0x00;
-
-                // Opcode
-                packet[6] = 0x04;
-                packet[7] = 0x00;
-
-                // Cursor Position
-                packet[8] = (byte)_screenBuffer.CursorRow;
-                packet[9] = (byte)_screenBuffer.CursorCol;
-
-                // AID Code
-                packet[10] = (byte)(aidCode != Tn5250Constants.AID_NO_AID ? aidCode : Tn5250Constants.AID_ENTER);
-
-                // Field Data
-                if (textBytes.Length > 0)
-                {
-                    Array.Copy(textBytes, 0, packet, 11, textBytes.Length);
-                }
-
-                // Telnet End-Of-Record
-                packet[packet.Length - 2] = Tn5250Constants.IAC;
-                packet[packet.Length - 1] = Tn5250Constants.EOR;
-
-                SendRaw(packet);
+                SendRaw(wireBytes);
 
                 // Wait for presentation space update or timeout
                 int waitMs = Math.Max(500, waitSeconds * 1000);
@@ -748,7 +748,94 @@ namespace AS400PADCustomAction.Core.Tn5250
         }
 
         /// <summary>
-        /// Transmits a function key or control key (Enter, F1-F24, PageUp/Down, Clear, etc.) to the AS400.
+        /// Constructs an RFC 1205 compliant 5250 Inbound Workstation Data Record.
+        /// Fixed Header (6 bytes: Length, 0x12A0, 0x0000) + Variable Header (4 bytes: 0x04, Flags 0x0000, Opcode 0x00)
+        /// + 5250 Inbound Stream (CursorRow, CursorCol, AID, [Field Data...]) + IAC EOR.
+        /// </summary>
+        private byte[] BuildRFC1205InboundRecord(byte aidCode, IEnumerable<PendingFieldWrite> fieldWrites = null, byte[] extraPayload = null)
+        {
+            List<byte> streamData = new List<byte>();
+
+            // 5250 Inbound Workstation Data Stream:
+            // Byte 10: Cursor Row (1-based)
+            streamData.Add((byte)_screenBuffer.CursorRow);
+            // Byte 11: Cursor Col (1-based)
+            streamData.Add((byte)_screenBuffer.CursorCol);
+            // Byte 12: Attention Identifier (AID) Code
+            streamData.Add(aidCode);
+
+            // Append pending field writes (SBA order 0x11, Row, Col, EBCDIC text)
+            if (fieldWrites != null)
+            {
+                foreach (var write in fieldWrites)
+                {
+                    if (!string.IsNullOrEmpty(write.Text))
+                    {
+                        streamData.Add(Tn5250Constants.ORDER_SBA);
+                        streamData.Add((byte)write.Row);
+                        streamData.Add((byte)write.Col);
+                        byte[] ebcdic = EbcdicCodec.ToEbcdicBytes(write.Text);
+                        streamData.AddRange(ebcdic);
+                    }
+                }
+            }
+
+            if (extraPayload != null && extraPayload.Length > 0)
+            {
+                streamData.AddRange(extraPayload);
+            }
+
+            // 10-byte GDS Header:
+            int logicalRecordLength = 10 + streamData.Count;
+            List<byte> packet = new List<byte>(logicalRecordLength + 4);
+
+            // 1. Logical Record Length (16 bits, big-endian)
+            packet.Add((byte)((logicalRecordLength >> 8) & 0xFF));
+            packet.Add((byte)(logicalRecordLength & 0xFF));
+
+            // 2. SNA Record Type: '12A0'X (General Data Stream)
+            packet.Add(0x12);
+            packet.Add(0xA0);
+
+            // 3. Reserved (16 bits)
+            packet.Add(0x00);
+            packet.Add(0x00);
+
+            // 4. Variable Header Length: 4 octets
+            packet.Add(0x04);
+
+            // 5. Flags (16 bits): 0x0000
+            packet.Add(0x00);
+            packet.Add(0x00);
+
+            // 6. Opcode (8 bits): 0x00 (No Operation)
+            packet.Add(0x00);
+
+            // 7. 5250 Inbound Data Stream
+            packet.AddRange(streamData);
+
+            // 8. Escape IAC (0xFF) in packet payload before appending <IAC><EOR>
+            List<byte> wireBytes = new List<byte>(packet.Count + 4);
+            for (int p = 0; p < packet.Count; p++)
+            {
+                byte b = packet[p];
+                wireBytes.Add(b);
+                if (b == Tn5250Constants.IAC)
+                {
+                    wireBytes.Add(Tn5250Constants.IAC); // Doubled IAC per RFC 854/1205
+                }
+            }
+
+            // 9. Telnet End-Of-Record (RFC 885)
+            wireBytes.Add(Tn5250Constants.IAC);
+            wireBytes.Add(Tn5250Constants.EOR);
+
+            return wireBytes.ToArray();
+        }
+
+        /// <summary>
+        /// Transmits a function key or control key (Enter, Transmit, F1-F24, PageUp/Down, Clear, etc.) to the AS400
+        /// along with any accumulated field text entered via WriteText.
         /// </summary>
         public void SendKey(AS400Key key, int waitSeconds)
         {
@@ -765,33 +852,14 @@ namespace AS400PADCustomAction.Core.Tn5250
 
                 byte aidCode = MapKeyToAid(key);
 
-                // Construct standard 5250 Inbound Workstation Data Record with empty payload
-                int payloadLength = 11;
-                byte[] packet = new byte[payloadLength + 2];
+                List<PendingFieldWrite> writesToSend;
+                lock (_stateLock)
+                {
+                    writesToSend = new List<PendingFieldWrite>(_pendingWrites);
+                    _pendingWrites.Clear();
+                }
 
-                // GDS Header
-                packet[0] = (byte)((payloadLength >> 8) & 0xFF);
-                packet[1] = (byte)(payloadLength & 0xFF);
-                packet[2] = 0x12;
-                packet[3] = 0xA0;
-                packet[4] = 0x00;
-                packet[5] = 0x00;
-
-                // Opcode
-                packet[6] = 0x04;
-                packet[7] = 0x00;
-
-                // Cursor Position
-                packet[8] = (byte)_screenBuffer.CursorRow;
-                packet[9] = (byte)_screenBuffer.CursorCol;
-
-                // AID Code
-                packet[10] = aidCode;
-
-                // Telnet End-Of-Record
-                packet[packet.Length - 2] = Tn5250Constants.IAC;
-                packet[packet.Length - 1] = Tn5250Constants.EOR;
-
+                byte[] packet = BuildRFC1205InboundRecord(aidCode, writesToSend);
                 SendRaw(packet);
 
                 // Wait for presentation space update or timeout
@@ -820,6 +888,7 @@ namespace AS400PADCustomAction.Core.Tn5250
             switch (key)
             {
                 case AS400Key.Enter:
+                case AS400Key.Transmit:
                     return Tn5250Constants.AID_ENTER;
                 case AS400Key.F1:
                 case AS400Key.F2:

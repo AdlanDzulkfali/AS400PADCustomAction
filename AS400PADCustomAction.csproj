@@ -25,4 +25,10 @@
     <Reference Include="WindowsBase" />
     <Reference Include="System.Xaml" />
   </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <LogicalName>Modules.AS400PADCustomAction.Properties.Resources.resources</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
 </Project>
