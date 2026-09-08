@@ -1,0 +1,270 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETFramework,Version=v4.7.2": {
+      "Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK/1.5.255.25087": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.dll": {
+            "related": ".deps.json;.xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.dll": {
+            "related": ".deps.json;.xml"
+          }
+        },
+        "resource": {
+          "lib/netstandard2.0/bg/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "bg"
+          },
+          "lib/netstandard2.0/ca/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "ca"
+          },
+          "lib/netstandard2.0/cs/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "cs"
+          },
+          "lib/netstandard2.0/da/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "da"
+          },
+          "lib/netstandard2.0/de/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "de"
+          },
+          "lib/netstandard2.0/el/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "el"
+          },
+          "lib/netstandard2.0/es/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "es"
+          },
+          "lib/netstandard2.0/et/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "et"
+          },
+          "lib/netstandard2.0/eu/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "eu"
+          },
+          "lib/netstandard2.0/fi/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "fi"
+          },
+          "lib/netstandard2.0/fr/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "fr"
+          },
+          "lib/netstandard2.0/gl/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "gl"
+          },
+          "lib/netstandard2.0/hi/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "hi"
+          },
+          "lib/netstandard2.0/hr/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "hr"
+          },
+          "lib/netstandard2.0/hu/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "hu"
+          },
+          "lib/netstandard2.0/id/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "id"
+          },
+          "lib/netstandard2.0/it/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "it"
+          },
+          "lib/netstandard2.0/ja/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "ja"
+          },
+          "lib/netstandard2.0/kk/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "kk"
+          },
+          "lib/netstandard2.0/ko/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "ko"
+          },
+          "lib/netstandard2.0/lt/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "lt"
+          },
+          "lib/netstandard2.0/lv/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "lv"
+          },
+          "lib/netstandard2.0/ms/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "ms"
+          },
+          "lib/netstandard2.0/nl/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "nl"
+          },
+          "lib/netstandard2.0/no/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "no"
+          },
+          "lib/netstandard2.0/pl/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "pl"
+          },
+          "lib/netstandard2.0/pt-BR/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "pt-BR"
+          },
+          "lib/netstandard2.0/pt-PT/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "pt-PT"
+          },
+          "lib/netstandard2.0/ro/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "ro"
+          },
+          "lib/netstandard2.0/ru/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "ru"
+          },
+          "lib/netstandard2.0/sk/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "sk"
+          },
+          "lib/netstandard2.0/sl/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "sl"
+          },
+          "lib/netstandard2.0/sr-Cyrl-RS/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "sr-Cyrl-RS"
+          },
+          "lib/netstandard2.0/sr-Latn-RS/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "sr-Latn-RS"
+          },
+          "lib/netstandard2.0/sv/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "sv"
+          },
+          "lib/netstandard2.0/th/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "th"
+          },
+          "lib/netstandard2.0/tr/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "tr"
+          },
+          "lib/netstandard2.0/uk/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "uk"
+          },
+          "lib/netstandard2.0/vi/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "vi"
+          },
+          "lib/netstandard2.0/zh-Hans/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "zh-Hans"
+          },
+          "lib/netstandard2.0/zh-Hant/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll": {
+            "locale": "zh-Hant"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK/1.5.255.25087": {
+      "sha512": "tLnRENmFdb1ZJCld/81kzK3rbNKR2wHc+h99iljx6QTSPDLnqqUZBYlx5e4FPfSYgZHmcA9f0C/FIHyUtThNiw==",
+      "type": "package",
+      "path": "microsoft.powerplatform.powerautomate.desktop.actions.sdk/1.5.255.25087",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "License.md",
+        "icon.png",
+        "lib/netstandard2.0/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.deps.json",
+        "lib/netstandard2.0/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.dll",
+        "lib/netstandard2.0/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.xml",
+        "lib/netstandard2.0/bg/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/ca/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/cs/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/da/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/de/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/el/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/es/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/et/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/eu/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/fi/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/fr/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/gl/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/hi/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/hr/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/hu/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/id/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/it/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/ja/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/kk/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/ko/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/lt/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/lv/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/ms/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/nl/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/no/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/pl/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/pt-BR/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/pt-PT/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/ro/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/ru/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/sk/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/sl/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/sr-Cyrl-RS/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/sr-Latn-RS/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/sv/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/th/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/tr/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/uk/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/vi/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/zh-Hans/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "lib/netstandard2.0/zh-Hant/Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.resources.dll",
+        "microsoft.powerplatform.powerautomate.desktop.actions.sdk.1.5.255.25087.nupkg.sha512",
+        "microsoft.powerplatform.powerautomate.desktop.actions.sdk.nuspec"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETFramework,Version=v4.7.2": [
+      "Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK >= 1.5.255.25087"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\Admin\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "d:\\PROJECTS\\AS400PADCustomAction\\AS400PADCustomAction.csproj",
+      "projectName": "Modules.AS400PADCustomAction",
+      "projectPath": "d:\\PROJECTS\\AS400PADCustomAction\\AS400PADCustomAction.csproj",
+      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+      "outputPath": "d:\\PROJECTS\\AS400PADCustomAction\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net472"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Users\\Admin\\Documents\\ngtPackage": {},
+        "https://api.nuget.org/v3/index.json": {},
+        "https://gallery.uipath.com/api/v3/index.json": {}
+      },
+      "frameworks": {
+        "net472": {
+          "targetAlias": "net472",
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "9.0.300"
+    },
+    "frameworks": {
+      "net472": {
+        "targetAlias": "net472",
+        "dependencies": {
+          "Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK": {
+            "target": "Package",
+            "version": "[1.5.255.25087, )"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.302\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

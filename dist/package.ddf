@@ -1,0 +1,8 @@
+.OPTION EXPLICIT
+.Set CabinetNameTemplate=Modules.AS400PADCustomAction.cab
+.Set DiskDirectory1=D:\PROJECTS\AS400PADCustomAction\dist
+.Set CompressionType=LZX
+.Set Cabinet=on
+.Set Compress=on
+"D:\PROJECTS\AS400PADCustomAction\bin\Release\net472\Modules.AS400PADCustomAction.dll" "Modules.AS400PADCustomAction.dll"
+"D:\PROJECTS\AS400PADCustomAction\bin\Release\net472\Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.dll" "Microsoft.PowerPlatform.PowerAutomate.Desktop.Actions.SDK.dll"

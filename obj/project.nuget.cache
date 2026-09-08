@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "SwF4P0KkQ28=",
+  "success": true,
+  "projectFilePath": "D:\\PROJECTS\\AS400PADCustomAction\\AS400PADCustomAction.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Admin\\.nuget\\packages\\microsoft.powerplatform.powerautomate.desktop.actions.sdk\\1.5.255.25087\\microsoft.powerplatform.powerautomate.desktop.actions.sdk.1.5.255.25087.nupkg.sha512"
+  ],
+  "logs": []
+}
