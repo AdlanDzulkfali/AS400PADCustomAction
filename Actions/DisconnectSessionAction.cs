@@ -23,6 +23,7 @@ namespace AS400PADCustomAction.Actions
             {
                 if (!string.IsNullOrWhiteSpace(SessionId))
                 {
+                    UI.ViewerManager.CloseViewer(SessionId);
                     SessionRegistry.Instance.SafeDisconnectAndRemove(SessionId);
                 }
                 Success = true;

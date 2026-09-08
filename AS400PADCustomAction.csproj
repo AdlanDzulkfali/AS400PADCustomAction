@@ -20,6 +20,10 @@
   <ItemGroup>
     <Reference Include="System.Net" />
     <Reference Include="System.Net.Sockets" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="System.Xaml" />
   </ItemGroup>
 
 </Project>

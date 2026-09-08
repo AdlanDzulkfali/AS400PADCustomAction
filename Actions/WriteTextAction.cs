@@ -51,6 +51,8 @@ namespace AS400PADCustomAction.Actions
                 NewRow = cursor.Item1;
                 NewCol = cursor.Item2;
                 Success = true;
+
+                driver.NotifyActionProgress("WriteText", $"\"{Text}\" at R:{NewRow} C:{NewCol}");
             }, nameof(WriteTextAction), SessionId);
         }
     }

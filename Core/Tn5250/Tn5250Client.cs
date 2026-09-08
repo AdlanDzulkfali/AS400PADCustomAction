@@ -47,6 +47,32 @@ namespace AS400PADCustomAction.Core.Tn5250
 
         public Tn5250ScreenBuffer ScreenBuffer => _screenBuffer;
 
+        public event Action<string, int, int> ScreenUpdated;
+        public event Action<string> ActionProgressChanged;
+
+        public void NotifyActionProgress(string actionName, string details)
+        {
+            try
+            {
+                string msg = string.IsNullOrEmpty(details) ? actionName : $"{actionName}: {details}";
+                ActionProgressChanged?.Invoke(msg);
+            }
+            catch { }
+        }
+
+        public void FireScreenUpdated()
+        {
+            try
+            {
+                if (ScreenUpdated != null)
+                {
+                    string text = _screenBuffer.ReadBox(1, 1, 24, 80);
+                    ScreenUpdated.Invoke(text, _screenBuffer.CursorRow, _screenBuffer.CursorCol);
+                }
+            }
+            catch { }
+        }
+
         public Tn5250Client(string sessionId = null)
         {
             SessionId = !string.IsNullOrWhiteSpace(sessionId) ? sessionId : "AS400_" + Guid.NewGuid().ToString("N").Substring(0, 8);
@@ -150,6 +176,8 @@ namespace AS400PADCustomAction.Core.Tn5250
                     }
                 }
             }
+
+            FireScreenUpdated();
         }
 
         public void Connect(string host, int port, int timeoutSeconds)
@@ -213,6 +241,8 @@ namespace AS400PADCustomAction.Core.Tn5250
             {
                 _screenBuffer.SetCursor(targetRow, targetCol);
             }
+
+            FireScreenUpdated();
         }
 
         /// <summary>
@@ -228,6 +258,7 @@ namespace AS400PADCustomAction.Core.Tn5250
             }
 
             _screenBuffer.SetCursor(row, col);
+            FireScreenUpdated();
         }
 
         /// <summary>
@@ -406,6 +437,7 @@ namespace AS400PADCustomAction.Core.Tn5250
                                         recordBuffer.Clear();
                                     }
                                     _screenUpdatedEvent.Set();
+                                    FireScreenUpdated();
                                     break;
                             }
                         }
@@ -713,6 +745,123 @@ namespace AS400PADCustomAction.Core.Tn5250
                 return (byte)(Tn5250Constants.AID_PF13 + (pfNumber - 13));
             }
             return Tn5250Constants.AID_ENTER;
+        }
+
+        /// <summary>
+        /// Transmits a function key or control key (Enter, F1-F24, PageUp/Down, Clear, etc.) to the AS400.
+        /// </summary>
+        public void SendKey(AS400Key key, int waitSeconds)
+        {
+            if (!IsConnected)
+            {
+                SafeTeardown();
+                throw new AS400Exception(AS400ErrorCode.SessionFaulted,
+                    $"Session '{SessionId}' is not connected. Operation SendKey aborted.");
+            }
+
+            try
+            {
+                _screenUpdatedEvent.Reset();
+
+                byte aidCode = MapKeyToAid(key);
+
+                // Construct standard 5250 Inbound Workstation Data Record with empty payload
+                int payloadLength = 11;
+                byte[] packet = new byte[payloadLength + 2];
+
+                // GDS Header
+                packet[0] = (byte)((payloadLength >> 8) & 0xFF);
+                packet[1] = (byte)(payloadLength & 0xFF);
+                packet[2] = 0x12;
+                packet[3] = 0xA0;
+                packet[4] = 0x00;
+                packet[5] = 0x00;
+
+                // Opcode
+                packet[6] = 0x04;
+                packet[7] = 0x00;
+
+                // Cursor Position
+                packet[8] = (byte)_screenBuffer.CursorRow;
+                packet[9] = (byte)_screenBuffer.CursorCol;
+
+                // AID Code
+                packet[10] = aidCode;
+
+                // Telnet End-Of-Record
+                packet[packet.Length - 2] = Tn5250Constants.IAC;
+                packet[packet.Length - 1] = Tn5250Constants.EOR;
+
+                SendRaw(packet);
+
+                // Wait for presentation space update or timeout
+                int waitMs = Math.Max(500, waitSeconds * 1000);
+                _screenUpdatedEvent.Wait(waitMs);
+                FireScreenUpdated();
+            }
+            catch (Exception ex)
+            {
+                SafeTeardown();
+                throw new AS400Exception(AS400ErrorCode.SessionFaulted,
+                    $"Failed to send special key '{key}' to AS400 on session '{SessionId}'. Connection has been terminated: {ex.Message}", null, ex);
+            }
+        }
+
+        /// <summary>
+        /// Backward compatibility alias for SendKey.
+        /// </summary>
+        public void SendSpecialKey(AS400Key key, int waitSeconds) => SendKey(key, waitSeconds);
+
+        /// <summary>
+        /// Maps an AS400Key enum value to its corresponding 5250 Attention Identification (AID) byte.
+        /// </summary>
+        public static byte MapKeyToAid(AS400Key key)
+        {
+            switch (key)
+            {
+                case AS400Key.Enter:
+                    return Tn5250Constants.AID_ENTER;
+                case AS400Key.F1:
+                case AS400Key.F2:
+                case AS400Key.F3:
+                case AS400Key.F4:
+                case AS400Key.F5:
+                case AS400Key.F6:
+                case AS400Key.F7:
+                case AS400Key.F8:
+                case AS400Key.F9:
+                case AS400Key.F10:
+                case AS400Key.F11:
+                case AS400Key.F12:
+                    return (byte)(Tn5250Constants.AID_PF1 + (key - AS400Key.F1));
+                case AS400Key.F13:
+                case AS400Key.F14:
+                case AS400Key.F15:
+                case AS400Key.F16:
+                case AS400Key.F17:
+                case AS400Key.F18:
+                case AS400Key.F19:
+                case AS400Key.F20:
+                case AS400Key.F21:
+                case AS400Key.F22:
+                case AS400Key.F23:
+                case AS400Key.F24:
+                    return (byte)(Tn5250Constants.AID_PF13 + (key - AS400Key.F13));
+                case AS400Key.PageUp:
+                    return Tn5250Constants.AID_PAGE_UP;
+                case AS400Key.PageDown:
+                    return Tn5250Constants.AID_PAGE_DOWN;
+                case AS400Key.Clear:
+                    return Tn5250Constants.AID_CLEAR;
+                case AS400Key.Help:
+                    return Tn5250Constants.AID_HELP;
+                case AS400Key.Print:
+                    return Tn5250Constants.AID_PRINT;
+                case AS400Key.RecordBackspace:
+                    return Tn5250Constants.AID_RECORD_BACKSPACE;
+                default:
+                    return Tn5250Constants.AID_ENTER;
+            }
         }
 
         public string ReadScreen(int startRow, int startCol, int length)

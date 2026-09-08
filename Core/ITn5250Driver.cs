@@ -51,6 +51,11 @@ namespace AS400PADCustomAction.Core
         void SendKeys(string text, bool sendEnterKey, int waitSeconds);
 
         /// <summary>
+        /// Transmits a function key or control key (Enter, F1-F24, PageUp/Down, Clear, etc.) to the AS400.
+        /// </summary>
+        void SendKey(AS400Key key, int waitSeconds);
+
+        /// <summary>
         /// Reads a contiguous string of characters from the 24x80 presentation space.
         /// </summary>
         string ReadScreen(int startRow, int startCol, int length);
@@ -84,5 +89,21 @@ namespace AS400PADCustomAction.Core
         /// Waits until the screen update stream quiesces and is ready for input.
         /// </summary>
         bool WaitForScreenReady(int timeoutSeconds);
+
+        /// <summary>
+        /// Fired whenever the 24x80 presentation space updates or cursor moves.
+        /// Parameters: screenText (24 lines with newlines), cursorRow, cursorCol.
+        /// </summary>
+        event Action<string, int, int> ScreenUpdated;
+
+        /// <summary>
+        /// Fired whenever an automation action executes or changes status on this session.
+        /// </summary>
+        event Action<string> ActionProgressChanged;
+
+        /// <summary>
+        /// Broadcasts an action execution progress status message to subscribers (e.g. live viewer).
+        /// </summary>
+        void NotifyActionProgress(string actionName, string details);
     }
 }

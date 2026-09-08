@@ -34,6 +34,9 @@ namespace AS400PADCustomAction.Actions
         [InputArgument(FriendlyName = "Accept Any Certificate", Description = "If true, accepts self-signed or internal enterprise CA certificates without validation errors.", Order = 6), DefaultValue(false)]
         public bool AcceptAnyCertificate { get; set; } = false;
 
+        [InputArgument(FriendlyName = "Show Live Terminal Viewer", Description = "If true, opens a floating live terminal window displaying the AS400 screen and execution progress in real time (default false).", Order = 7), DefaultValue(false)]
+        public bool ShowLiveViewer { get; set; } = false;
+
         [OutputArgument(FriendlyName = "Session ID", Description = "Unique session handle required for subsequent AS400 actions.", Order = 1)]
         public string SessionId { get; set; }
 
@@ -54,6 +57,11 @@ namespace AS400PADCustomAction.Actions
                 SessionRegistry.Instance.Register(generatedId, client);
                 SessionId = generatedId;
                 IsConnected = client.IsConnected;
+
+                if (ShowLiveViewer)
+                {
+                    UI.ViewerManager.ShowViewer(generatedId, true);
+                }
             }, nameof(ConnectSessionAction), generatedId);
         }
     }
