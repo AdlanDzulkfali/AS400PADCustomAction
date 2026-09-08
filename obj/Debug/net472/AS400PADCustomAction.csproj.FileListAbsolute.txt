@@ -49,3 +49,5 @@ d:\PROJECTS\AS400PADCustomAction\obj\Debug\net472\AS400PAD.43AD4D41.Up2Date
 d:\PROJECTS\AS400PADCustomAction\obj\Debug\net472\Modules.AS400PADCustomAction.dll
 d:\PROJECTS\AS400PADCustomAction\obj\Debug\net472\Modules.AS400PADCustomAction.pdb
 d:\PROJECTS\AS400PADCustomAction\obj\Debug\net472\AS400PADCustomAction.sourcelink.json
+D:\PROJECTS\AS400PADCustomAction\obj\Debug\net472\AS400PADCustomAction.Properties.Resources.resources
+D:\PROJECTS\AS400PADCustomAction\obj\Debug\net472\AS400PADCustomAction.csproj.GenerateResource.cache

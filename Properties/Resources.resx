@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" msdata:Ordinal="0" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <!-- Module and Action Metadata -->
+  <data name="Module_FriendlyName" xml:space="preserve">
+    <value>AS400 Automation</value>
+  </data>
+  <data name="Module_Description" xml:space="preserve">
+    <value>AS400 / IBM 5250 Terminal Automation for Power Automate Desktop.</value>
+  </data>
+  <data name="SendKeyAction_FriendlyName" xml:space="preserve">
+    <value>Send Key to AS400</value>
+  </data>
+  <data name="SendKeyAction_Description" xml:space="preserve">
+    <value>Transmits an AS400 function or control key to the active session.</value>
+  </data>
+  <data name="SendKeyAction_Key_FriendlyName" xml:space="preserve">
+    <value>Key to Send</value>
+  </data>
+  <data name="SendKeyAction_Key_Description" xml:space="preserve">
+    <value>Select an AS400 function or control key from the drop-down menu.</value>
+  </data>
+
+  <!-- SendKeyAction_Key Enum Option Friendly Names -->
+  <data name="SendKeyAction_Key_Enter" xml:space="preserve"><value>Enter</value></data>
+  <data name="SendKeyAction_Key_F1" xml:space="preserve"><value>F1</value></data>
+  <data name="SendKeyAction_Key_F2" xml:space="preserve"><value>F2</value></data>
+  <data name="SendKeyAction_Key_F3" xml:space="preserve"><value>F3</value></data>
+  <data name="SendKeyAction_Key_F4" xml:space="preserve"><value>F4</value></data>
+  <data name="SendKeyAction_Key_F5" xml:space="preserve"><value>F5</value></data>
+  <data name="SendKeyAction_Key_F6" xml:space="preserve"><value>F6</value></data>
+  <data name="SendKeyAction_Key_F7" xml:space="preserve"><value>F7</value></data>
+  <data name="SendKeyAction_Key_F8" xml:space="preserve"><value>F8</value></data>
+  <data name="SendKeyAction_Key_F9" xml:space="preserve"><value>F9</value></data>
+  <data name="SendKeyAction_Key_F10" xml:space="preserve"><value>F10</value></data>
+  <data name="SendKeyAction_Key_F11" xml:space="preserve"><value>F11</value></data>
+  <data name="SendKeyAction_Key_F12" xml:space="preserve"><value>F12</value></data>
+  <data name="SendKeyAction_Key_F13" xml:space="preserve"><value>F13</value></data>
+  <data name="SendKeyAction_Key_F14" xml:space="preserve"><value>F14</value></data>
+  <data name="SendKeyAction_Key_F15" xml:space="preserve"><value>F15</value></data>
+  <data name="SendKeyAction_Key_F16" xml:space="preserve"><value>F16</value></data>
+  <data name="SendKeyAction_Key_F17" xml:space="preserve"><value>F17</value></data>
+  <data name="SendKeyAction_Key_F18" xml:space="preserve"><value>F18</value></data>
+  <data name="SendKeyAction_Key_F19" xml:space="preserve"><value>F19</value></data>
+  <data name="SendKeyAction_Key_F20" xml:space="preserve"><value>F20</value></data>
+  <data name="SendKeyAction_Key_F21" xml:space="preserve"><value>F21</value></data>
+  <data name="SendKeyAction_Key_F22" xml:space="preserve"><value>F22</value></data>
+  <data name="SendKeyAction_Key_F23" xml:space="preserve"><value>F23</value></data>
+  <data name="SendKeyAction_Key_F24" xml:space="preserve"><value>F24</value></data>
+  <data name="SendKeyAction_Key_PageUp" xml:space="preserve"><value>Page Up (Roll Down)</value></data>
+  <data name="SendKeyAction_Key_PageDown" xml:space="preserve"><value>Page Down (Roll Up)</value></data>
+  <data name="SendKeyAction_Key_Clear" xml:space="preserve"><value>Clear</value></data>
+  <data name="SendKeyAction_Key_Help" xml:space="preserve"><value>Help</value></data>
+  <data name="SendKeyAction_Key_Print" xml:space="preserve"><value>Print</value></data>
+  <data name="SendKeyAction_Key_RecordBackspace" xml:space="preserve"><value>Record Backspace</value></data>
+
+  <!-- Action-ID Based Convention (AS400_SendKey_Key_...) -->
+  <data name="AS400_SendKey_Key_Enter" xml:space="preserve"><value>Enter</value></data>
+  <data name="AS400_SendKey_Key_F1" xml:space="preserve"><value>F1</value></data>
+  <data name="AS400_SendKey_Key_F2" xml:space="preserve"><value>F2</value></data>
+  <data name="AS400_SendKey_Key_F3" xml:space="preserve"><value>F3</value></data>
+  <data name="AS400_SendKey_Key_F4" xml:space="preserve"><value>F4</value></data>
+  <data name="AS400_SendKey_Key_F5" xml:space="preserve"><value>F5</value></data>
+  <data name="AS400_SendKey_Key_F6" xml:space="preserve"><value>F6</value></data>
+  <data name="AS400_SendKey_Key_F7" xml:space="preserve"><value>F7</value></data>
+  <data name="AS400_SendKey_Key_F8" xml:space="preserve"><value>F8</value></data>
+  <data name="AS400_SendKey_Key_F9" xml:space="preserve"><value>F9</value></data>
+  <data name="AS400_SendKey_Key_F10" xml:space="preserve"><value>F10</value></data>
+  <data name="AS400_SendKey_Key_F11" xml:space="preserve"><value>F11</value></data>
+  <data name="AS400_SendKey_Key_F12" xml:space="preserve"><value>F12</value></data>
+  <data name="AS400_SendKey_Key_F13" xml:space="preserve"><value>F13</value></data>
+  <data name="AS400_SendKey_Key_F14" xml:space="preserve"><value>F14</value></data>
+  <data name="AS400_SendKey_Key_F15" xml:space="preserve"><value>F15</value></data>
+  <data name="AS400_SendKey_Key_F16" xml:space="preserve"><value>F16</value></data>
+  <data name="AS400_SendKey_Key_F17" xml:space="preserve"><value>F17</value></data>
+  <data name="AS400_SendKey_Key_F18" xml:space="preserve"><value>F18</value></data>
+  <data name="AS400_SendKey_Key_F19" xml:space="preserve"><value>F19</value></data>
+  <data name="AS400_SendKey_Key_F20" xml:space="preserve"><value>F20</value></data>
+  <data name="AS400_SendKey_Key_F21" xml:space="preserve"><value>F21</value></data>
+  <data name="AS400_SendKey_Key_F22" xml:space="preserve"><value>F22</value></data>
+  <data name="AS400_SendKey_Key_F23" xml:space="preserve"><value>F23</value></data>
+  <data name="AS400_SendKey_Key_F24" xml:space="preserve"><value>F24</value></data>
+  <data name="AS400_SendKey_Key_PageUp" xml:space="preserve"><value>Page Up (Roll Down)</value></data>
+  <data name="AS400_SendKey_Key_PageDown" xml:space="preserve"><value>Page Down (Roll Up)</value></data>
+  <data name="AS400_SendKey_Key_Clear" xml:space="preserve"><value>Clear</value></data>
+  <data name="AS400_SendKey_Key_Help" xml:space="preserve"><value>Help</value></data>
+  <data name="AS400_SendKey_Key_Print" xml:space="preserve"><value>Print</value></data>
+  <data name="AS400_SendKey_Key_RecordBackspace" xml:space="preserve"><value>Record Backspace</value></data>
+
+  <!-- Type-Level Convention (AS400Key_...) -->
+  <data name="AS400Key_Enter" xml:space="preserve"><value>Enter</value></data>
+  <data name="AS400Key_F1" xml:space="preserve"><value>F1</value></data>
+  <data name="AS400Key_F2" xml:space="preserve"><value>F2</value></data>
+  <data name="AS400Key_F3" xml:space="preserve"><value>F3</value></data>
+  <data name="AS400Key_F4" xml:space="preserve"><value>F4</value></data>
+  <data name="AS400Key_F5" xml:space="preserve"><value>F5</value></data>
+  <data name="AS400Key_F6" xml:space="preserve"><value>F6</value></data>
+  <data name="AS400Key_F7" xml:space="preserve"><value>F7</value></data>
+  <data name="AS400Key_F8" xml:space="preserve"><value>F8</value></data>
+  <data name="AS400Key_F9" xml:space="preserve"><value>F9</value></data>
+  <data name="AS400Key_F10" xml:space="preserve"><value>F10</value></data>
+  <data name="AS400Key_F11" xml:space="preserve"><value>F11</value></data>
+  <data name="AS400Key_F12" xml:space="preserve"><value>F12</value></data>
+  <data name="AS400Key_F13" xml:space="preserve"><value>F13</value></data>
+  <data name="AS400Key_F14" xml:space="preserve"><value>F14</value></data>
+  <data name="AS400Key_F15" xml:space="preserve"><value>F15</value></data>
+  <data name="AS400Key_F16" xml:space="preserve"><value>F16</value></data>
+  <data name="AS400Key_F17" xml:space="preserve"><value>F17</value></data>
+  <data name="AS400Key_F18" xml:space="preserve"><value>F18</value></data>
+  <data name="AS400Key_F19" xml:space="preserve"><value>F19</value></data>
+  <data name="AS400Key_F20" xml:space="preserve"><value>F20</value></data>
+  <data name="AS400Key_F21" xml:space="preserve"><value>F21</value></data>
+  <data name="AS400Key_F22" xml:space="preserve"><value>F22</value></data>
+  <data name="AS400Key_F23" xml:space="preserve"><value>F23</value></data>
+  <data name="AS400Key_F24" xml:space="preserve"><value>F24</value></data>
+  <data name="AS400Key_PageUp" xml:space="preserve"><value>Page Up (Roll Down)</value></data>
+  <data name="AS400Key_PageDown" xml:space="preserve"><value>Page Down (Roll Up)</value></data>
+  <data name="AS400Key_Clear" xml:space="preserve"><value>Clear</value></data>
+  <data name="AS400Key_Help" xml:space="preserve"><value>Help</value></data>
+  <data name="AS400Key_Print" xml:space="preserve"><value>Print</value></data>
+  <data name="AS400Key_RecordBackspace" xml:space="preserve"><value>Record Backspace</value></data>
+</root>
