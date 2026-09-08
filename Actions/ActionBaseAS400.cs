@@ -10,7 +10,7 @@ namespace AS400PADCustomAction.Actions
     /// </summary>
     public abstract class ActionBaseAS400 : ActionBase
     {
-        public const string CategoryName = "AS400 Automation";
+        public const string CategoryName = "AS400Automation";
 
         /// <summary>
         /// Executes an action body within a resilient guard.

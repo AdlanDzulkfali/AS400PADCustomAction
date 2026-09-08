@@ -48,3 +48,4 @@ D:\PROJECTS\AS400PADCustomAction\obj\Release\net472\AS400PADCustomAction.csproj.
 d:\PROJECTS\AS400PADCustomAction\obj\Release\net472\AS400PAD.43AD4D41.Up2Date
 D:\PROJECTS\AS400PADCustomAction\obj\Release\net472\Modules.AS400PADCustomAction.dll
 D:\PROJECTS\AS400PADCustomAction\obj\Release\net472\Modules.AS400PADCustomAction.pdb
+D:\PROJECTS\AS400PADCustomAction\obj\Release\net472\AS400PADCustomAction.sourcelink.json
