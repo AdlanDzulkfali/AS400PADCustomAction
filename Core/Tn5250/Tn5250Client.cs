@@ -557,20 +557,18 @@ namespace AS400PADCustomAction.Core.Tn5250
         /// <summary>
         /// Parses an inbound 5250 Workstation Data record from the host and updates presentation space.
         /// </summary>
-        private void Process5250Record(byte[] record)
+        internal void Process5250Record(byte[] record)
         {
             if (record == null || record.Length == 0) return;
 
             int idx = 0;
 
-            // Optional 5250 GDS Workstation Header (Length + 0x12A0 ...)
-            if (record.Length >= 6 && record[2] == 0x12 && record[3] == 0xA0)
+            // 5250 GDS Workstation Header: Fixed Header (6 bytes: Length, 0x12A0, Reserved)
+            // followed by Variable Header (VarHdrLen octets, typically 4: VarHdrLen, Flags, Opcode)
+            if (record.Length >= 10 && record[2] == 0x12 && record[3] == 0xA0)
             {
-                idx = 6;
-                if (record.Length > idx + 3 && record[idx] == 0x04 && record[idx + 1] == 0x00)
-                {
-                    idx += 3;
-                }
+                int varHdrLen = record[6];
+                idx = 6 + varHdrLen;
             }
 
             while (idx < record.Length)
@@ -595,6 +593,9 @@ namespace AS400PADCustomAction.Core.Tn5250
 
                         case Tn5250Constants.CMD_WRITE_TO_DISPLAY:
                         case Tn5250Constants.CMD_RESTORE_SCREEN:
+                        case Tn5250Constants.CMD_READ_INPUT_FIELDS:
+                        case Tn5250Constants.CMD_READ_MDT_FIELDS:
+                        case Tn5250Constants.CMD_READ_SCREEN:
                             if (idx + 1 < record.Length) idx += 2;
                             break;
                     }
@@ -608,6 +609,15 @@ namespace AS400PADCustomAction.Core.Tn5250
                         byte fillByte = record[idx++];
                         char fillChar = EbcdicCodec.ToChar(fillByte);
                         _screenBuffer.RepeatToAddress(targetRow, targetCol, fillChar);
+                    }
+                }
+                else if (b == Tn5250Constants.ORDER_EA)
+                {
+                    if (idx + 1 < record.Length)
+                    {
+                        int targetRow = record[idx++];
+                        int targetCol = record[idx++];
+                        _screenBuffer.RepeatToAddress(targetRow, targetCol, ' ');
                     }
                 }
                 else if (b == Tn5250Constants.ORDER_SBA)
@@ -628,11 +638,51 @@ namespace AS400PADCustomAction.Core.Tn5250
                         _screenBuffer.SetCursor(row, col);
                     }
                 }
-                else if (b == Tn5250Constants.ORDER_SF)
+                else if (b == Tn5250Constants.ORDER_MC)
                 {
                     if (idx + 1 < record.Length)
                     {
-                        idx += 2;
+                        int row = record[idx++];
+                        int col = record[idx++];
+                        _screenBuffer.SetCursor(row, col);
+                    }
+                }
+                else if (b == Tn5250Constants.ORDER_SF)
+                {
+                    // 5250 Start of Field (SF) order:
+                    // - If input field ((cur & 0xE0) != 0x20): FFW (2 bytes), then 0..n FCWs (2 bytes each)
+                    // - Field Attribute byte (0x20..0x3F)
+                    // - Field Length (2 bytes)
+                    if (idx < record.Length)
+                    {
+                        byte cur = record[idx++];
+                        if ((cur & 0xE0) != 0x20)
+                        {
+                            // cur is FFW1; next is FFW2
+                            if (idx < record.Length) idx++;
+                            // Next bytes are FCWs until an attribute byte (0x20..0x3F) is reached
+                            while (idx < record.Length)
+                            {
+                                cur = record[idx++];
+                                if ((cur & 0xE0) == 0x20)
+                                {
+                                    // Found Field Attribute byte!
+                                    break;
+                                }
+                                // Skip the second byte of this FCW
+                                if (idx < record.Length) idx++;
+                            }
+                        }
+                        // At this point, cur is the Field Attribute byte.
+                        // Skip the 2-byte Field Length that follows
+                        if (idx + 1 < record.Length)
+                        {
+                            idx += 2;
+                        }
+                        else
+                        {
+                            idx = record.Length;
+                        }
                     }
                     _screenBuffer.WriteCharAndAdvance(' ');
                 }

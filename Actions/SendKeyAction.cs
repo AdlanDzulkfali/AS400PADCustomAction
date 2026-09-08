@@ -22,8 +22,8 @@ namespace AS400PADCustomAction.Actions
         [DefaultValue(AS400Key.Enter)]
         public AS400Key Key { get; set; } = AS400Key.Enter;
 
-        [InputArgument(FriendlyName = "Wait (seconds)", Description = "Duration in seconds to wait after sending key for the screen to refresh (default 1).", Order = 3), DefaultValue(1)]
-        public int WaitSeconds { get; set; } = 1;
+        [InputArgument(FriendlyName = "Wait (seconds)", Description = "Duration in seconds to wait after sending key for the screen to refresh (default 2).", Order = 3), DefaultValue(2)]
+        public int WaitSeconds { get; set; } = 2;
 
         [OutputArgument(FriendlyName = "Success", Description = "Returns true if the key was successfully transmitted to the AS400.", Order = 1)]
         public bool Success { get; set; }
