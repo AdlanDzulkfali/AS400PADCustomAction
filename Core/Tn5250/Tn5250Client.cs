@@ -374,6 +374,159 @@ namespace AS400PADCustomAction.Core.Tn5250
         }
 
         /// <summary>
+        /// Automates the complete AS400 sign-on process: locates credential fields, enters username and password,
+        /// submits credentials, and intelligently clears post-sign-on screens ("Sign-on Information", "Display Messages", "Press Enter to continue")
+        /// until reaching the main menu or target application.
+        /// </summary>
+        public bool Login(string username, string password, int? userRow = null, int? userCol = null, int? passRow = null, int? passCol = null, string expectedSuccessText = null, int timeoutSeconds = 30)
+        {
+            if (!IsConnected)
+            {
+                SafeTeardown();
+                throw new AS400Exception(AS400ErrorCode.SessionFaulted,
+                    $"Session '{SessionId}' is disconnected. Cannot perform login.");
+            }
+
+            NotifyActionProgress("Login", "Starting automated sign-on...");
+
+            // 1. Auto-detect or resolve User & Password field coordinates
+            int targetUserRow = userRow ?? 6;
+            int targetUserCol = userCol ?? 53;
+            int targetPassRow = passRow ?? 7;
+            int targetPassCol = passCol ?? 53;
+
+            if (!userRow.HasValue || !userCol.HasValue)
+            {
+                if (FindText("User", false, out int uRow, out int uCol))
+                {
+                    targetUserRow = uRow;
+                    string rowText = _screenBuffer.ReadSlice(uRow, 1, 80);
+                    int colonIdx = rowText.IndexOf(':', uCol - 1);
+                    if (colonIdx >= 0)
+                    {
+                        int col = colonIdx + 1;
+                        while (col < rowText.Length && rowText[col] == ' ') col++;
+                        targetUserCol = col + 1; // 1-based
+                    }
+                }
+            }
+
+            if (!passRow.HasValue || !passCol.HasValue)
+            {
+                if (FindText("Password", false, out int pRow, out int pCol))
+                {
+                    targetPassRow = pRow;
+                    string rowText = _screenBuffer.ReadSlice(pRow, 1, 80);
+                    int colonIdx = rowText.IndexOf(':', pCol - 1);
+                    if (colonIdx >= 0)
+                    {
+                        int col = colonIdx + 1;
+                        while (col < rowText.Length && rowText[col] == ' ') col++;
+                        targetPassCol = col + 1; // 1-based
+                    }
+                }
+            }
+
+            // 2. Clear previous field content and enter credentials
+            NotifyActionProgress("Login", $"Entering credentials (User at {targetUserRow}:{targetUserCol}, Pass at {targetPassRow}:{targetPassCol})...");
+            WriteText(username, targetUserRow, targetUserCol, eraseLength: 10);
+            WriteText(password, targetPassRow, targetPassCol, eraseLength: 10);
+
+            // 3. Send Enter to submit credentials
+            NotifyActionProgress("Login", "Submitting credentials to AS400...");
+            SendKey(AS400Key.Enter, waitSeconds: 2);
+
+            // 4. Intelligent Resolution Loop (Handling "Press Enter to continue", Messages, or Errors)
+            Stopwatch sw = Stopwatch.StartNew();
+            TimeSpan maxDuration = TimeSpan.FromSeconds(Math.Max(5, timeoutSeconds));
+
+            while (sw.Elapsed < maxDuration)
+            {
+                if (!IsConnected)
+                {
+                    SafeTeardown();
+                    throw new AS400Exception(AS400ErrorCode.SessionFaulted,
+                        $"Session '{SessionId}' dropped connection during login.");
+                }
+
+                string screenText = _screenBuffer.ReadBox(1, 1, 24, 80);
+
+                // A. Check for known IBM i authentication failure messages
+                if (screenText.IndexOf("CPF1107", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    screenText.IndexOf("Password not correct", StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    throw new AS400Exception(AS400ErrorCode.GeneralError,
+                        "Login failed: Password is not correct for user profile (CPF1107).");
+                }
+                if (screenText.IndexOf("CPF1109", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    screenText.IndexOf("User profile not found", StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    throw new AS400Exception(AS400ErrorCode.GeneralError,
+                        "Login failed: User profile not found (CPF1109).");
+                }
+                if (screenText.IndexOf("CPF1120", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    screenText.IndexOf("CPF1393", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    screenText.IndexOf("User profile is disabled", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    screenText.IndexOf("Profile is disabled", StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    throw new AS400Exception(AS400ErrorCode.GeneralError,
+                        "Login failed: User profile is disabled (CPF1120/CPF1393).");
+                }
+                if (screenText.IndexOf("CPF1119", StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    throw new AS400Exception(AS400ErrorCode.GeneralError,
+                        "Login failed: User ID or password not entered (CPF1119).");
+                }
+
+                // B. Check for user-specified expected success text
+                if (!string.IsNullOrEmpty(expectedSuccessText))
+                {
+                    if (screenText.IndexOf(expectedSuccessText, StringComparison.OrdinalIgnoreCase) >= 0)
+                    {
+                        NotifyActionProgress("Login", $"Login successful! Reached target screen: '{expectedSuccessText}'.");
+                        return true;
+                    }
+                }
+
+                // C. Check for intermediate "Press Enter to continue" / informational screens
+                bool hasPressEnterPrompt =
+                    screenText.IndexOf("Press Enter to continue", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    screenText.IndexOf("Press Enter to see more", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    screenText.IndexOf("Sign-on Information", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    screenText.IndexOf("Display Messages", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    screenText.IndexOf("Display Program Messages", StringComparison.OrdinalIgnoreCase) >= 0;
+
+                if (hasPressEnterPrompt)
+                {
+                    NotifyActionProgress("Login", "Clearing interstitial screen ('Press Enter to continue')...");
+                    SendKey(AS400Key.Enter, waitSeconds: 2);
+                    continue;
+                }
+
+                // D. If expectedSuccessText wasn't specified, check if sign-on screen is gone
+                if (string.IsNullOrEmpty(expectedSuccessText))
+                {
+                    bool stillOnSignon =
+                        (screenText.IndexOf("Sign-on", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                         screenText.IndexOf("Sign On", StringComparison.OrdinalIgnoreCase) >= 0) &&
+                        (screenText.IndexOf("User", StringComparison.OrdinalIgnoreCase) >= 0 &&
+                         screenText.IndexOf("Password", StringComparison.OrdinalIgnoreCase) >= 0);
+
+                    if (!stillOnSignon)
+                    {
+                        NotifyActionProgress("Login", "Login successful! Sign-on screen dismissed.");
+                        return true;
+                    }
+                }
+
+                _screenUpdatedEvent.Wait(300);
+            }
+
+            throw new AS400Exception(AS400ErrorCode.OperationTimeout,
+                $"Login timed out after {timeoutSeconds}s without reaching the expected screen.");
+        }
+
+        /// <summary>
         /// Background worker listening for Telnet and 5250 data streams.
         /// </summary>
         private void ReceiveWorker()

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
@@ -222,8 +222,23 @@
   <data name="SendKeyAction_Key_Help" xml:space="preserve"><value>Help</value></data>
   <data name="AS400Key_Print" xml:space="preserve"><value>Print</value></data>
   <data name="SendKeyAction_Key_Print" xml:space="preserve"><value>Print</value></data>
-  <data name="AS400Key_RecordBackspace" xml:space="preserve"><value>Record Backspace</value></data>
-  <data name="SendKeyAction_Key_RecordBackspace" xml:space="preserve"><value>Record Backspace</value></data>
   <data name="AS400Key_Transmit" xml:space="preserve"><value>Transmit</value></data>
   <data name="SendKeyAction_Key_Transmit" xml:space="preserve"><value>Transmit</value></data>
+
+  <!-- AS400_Login Action Metadata -->
+  <data name="AS400_Login_FriendlyName" xml:space="preserve"><value>Login to AS400 Session</value></data>
+  <data name="AS400_Login_Description" xml:space="preserve"><value>Automates the complete AS400 sign-on process, entering credentials and automatically clearing post-sign-on informational and message screens until reaching the main menu.</value></data>
+  <data name="LoginAction_FriendlyName" xml:space="preserve"><value>Login to AS400 Session</value></data>
+  <data name="LoginAction_Description" xml:space="preserve"><value>Automates the complete AS400 sign-on process, entering credentials and automatically clearing post-sign-on informational and message screens until reaching the main menu.</value></data>
+  <data name="LoginAction_SessionId_FriendlyName" xml:space="preserve"><value>Session ID</value></data>
+  <data name="LoginAction_Username_FriendlyName" xml:space="preserve"><value>Username</value></data>
+  <data name="LoginAction_Password_FriendlyName" xml:space="preserve"><value>Password</value></data>
+  <data name="LoginAction_ExpectedSuccessText_FriendlyName" xml:space="preserve"><value>Expected Success Text</value></data>
+  <data name="LoginAction_TimeoutSeconds_FriendlyName" xml:space="preserve"><value>Timeout (seconds)</value></data>
+  <data name="LoginAction_UserRow_FriendlyName" xml:space="preserve"><value>User Row</value></data>
+  <data name="LoginAction_UserCol_FriendlyName" xml:space="preserve"><value>User Column</value></data>
+  <data name="LoginAction_PasswordRow_FriendlyName" xml:space="preserve"><value>Password Row</value></data>
+  <data name="LoginAction_PasswordCol_FriendlyName" xml:space="preserve"><value>Password Column</value></data>
+  <data name="LoginAction_Success_FriendlyName" xml:space="preserve"><value>Success</value></data>
+  <data name="LoginAction_ScreenText_FriendlyName" xml:space="preserve"><value>Screen Text</value></data>
 </root>

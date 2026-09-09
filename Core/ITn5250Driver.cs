@@ -91,6 +91,11 @@ namespace AS400PADCustomAction.Core
         bool WaitForScreenReady(int timeoutSeconds);
 
         /// <summary>
+        /// Automates the complete AS400 sign-on process, entering credentials and automatically clearing post-sign-on informational and message screens until reaching the main menu or target application.
+        /// </summary>
+        bool Login(string username, string password, int? userRow = null, int? userCol = null, int? passRow = null, int? passCol = null, string expectedSuccessText = null, int timeoutSeconds = 30);
+
+        /// <summary>
         /// Fired whenever the 24x80 presentation space updates or cursor moves.
         /// Parameters: screenText (24 lines with newlines), cursorRow, cursorCol.
         /// </summary>
